@@ -1,0 +1,6 @@
+
+yarn add @react-navigation/native @react-native-picker/picker @react-navigation/bottom-tabs axios
+
+
+
+expo install react-native-screens react-native-safe-area-context install react-native-gesture-handler
