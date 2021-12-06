@@ -5,10 +5,19 @@ import { Character } from "../../types/common";
 
 type CardProps = {
   character: Character;
+  setSelectedCharacter: (character: Character) => void;
+  setModalVisible: (value: boolean) => void;
 };
 
-const Card = ({ character }: CardProps) => {
-  const handleDetail = () => {};
+const Card = ({
+  character,
+  setSelectedCharacter,
+  setModalVisible,
+}: CardProps) => {
+  const handleDetail = () => {
+    setSelectedCharacter(character);
+    setModalVisible(true);
+  };
 
   return (
     <TouchableOpacity style={styles.container} onPress={handleDetail}>

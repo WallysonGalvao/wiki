@@ -1,8 +1,9 @@
-import React, { useEffect, useReducer, useState } from "react";
-import { FlatList, StyleSheet, TextInput } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useEffect, useLayoutEffect, useReducer, useState } from "react";
+import { Button, FlatList, StyleSheet, TextInput, View } from "react-native";
+import { useNavigation } from "@react-navigation/core";
 
 import Card from "../../components/Card";
+import Detail from "../../components/Detail";
 
 import api from "../../services";
 import { Character } from "../../types/common";
@@ -16,9 +17,7 @@ type CharacterParams = {
   species: string;
 };
 
-const initialState = {
-  page: 1,
-} as CharacterParams;
+const initialState = {} as CharacterParams;
 
 type Reducer = {
   key: keyof CharacterParams;
@@ -31,8 +30,13 @@ const reducer = (state: CharacterParams, { key, value }: Reducer) => ({
 });
 
 const Characters = () => {
-  const [characters, setCharacters] = useState<Character[]>([]);
+  const { setOptions } = useNavigation();
   const [params, setParams] = useReducer(reducer, initialState);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
+    null
+  );
 
   const callCharacters = async (name = "") => {
     console.log("callCharacters:: " + JSON.stringify(name));
@@ -61,18 +65,32 @@ const Characters = () => {
     callCharacters(value);
   };
 
+  const handleFilter = () => {
+    console.log("Filter");
+  };
+
   useEffect(() => {
     callCharacters();
+  }, []);
+
+  useLayoutEffect(() => {
+    setOptions({
+      headerRight: () => <Button onPress={handleFilter} title="Filters" />,
+    });
   }, []);
 
   const keyExtractor = (item: Character) => item.id.toString();
 
   const renderItem = ({ item }: { item: Character }) => (
-    <Card character={item} />
+    <Card
+      character={item}
+      setSelectedCharacter={setSelectedCharacter}
+      setModalVisible={setModalVisible}
+    />
   );
 
   return (
-    <SafeAreaView edges={["left", "right"]} style={styles.container}>
+    <View style={styles.container}>
       <TextInput
         style={styles.input}
         onChangeText={(value) => onChangeSearch(value)}
@@ -91,7 +109,14 @@ const Characters = () => {
         columnWrapperStyle={styles.columns}
         showsVerticalScrollIndicator={false}
       />
-    </SafeAreaView>
+      {!!selectedCharacter && (
+        <Detail
+          character={selectedCharacter}
+          isVisible={isModalVisible}
+          setModalVisible={setModalVisible}
+        />
+      )}
+    </View>
   );
 };
 

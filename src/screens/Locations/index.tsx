@@ -3,6 +3,7 @@ import { Text, FlatList, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Card from "../../components/Card";
+import Detail from "../../components/Detail";
 import Picker from "../../components/Picker";
 
 import api from "../../services";
@@ -13,7 +14,11 @@ const Locations = () => {
   const [locationId, setLocationId] = useState(5);
   const [location, setLocation] = useState<Location>({} as Location);
   const [locations, setLocations] = useState<Location[]>([]);
+  const [isModalVisible, setModalVisible] = useState(false);
   const [characters, setCharacters] = useState<Character[]>([]);
+  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
+    null
+  );
 
   const callLocations = async () => {
     const { data } = await api.get<LocationsResponse>("location");
@@ -55,7 +60,7 @@ const Locations = () => {
             <Text style={styles.headerLocationName}>{location?.name}</Text>
           </Text>
 
-          <Text style={styles.headerAirDate}>
+          <Text>
             Type:<Text>{location?.type}</Text>
           </Text>
         </View>
@@ -70,7 +75,11 @@ const Locations = () => {
   };
 
   const renderItem = ({ item }: { item: Character }) => (
-    <Card character={item} />
+    <Card
+      character={item}
+      setSelectedCharacter={setSelectedCharacter}
+      setModalVisible={setModalVisible}
+    />
   );
 
   return (
@@ -84,6 +93,13 @@ const Locations = () => {
         columnWrapperStyle={styles.columns}
         showsVerticalScrollIndicator={false}
       />
+      {!!selectedCharacter && (
+        <Detail
+          character={selectedCharacter}
+          isVisible={isModalVisible}
+          setModalVisible={setModalVisible}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -113,5 +129,4 @@ const styles = StyleSheet.create({
     color: "#0b5ed7",
     fontWeight: "bold",
   },
-  headerAirDate: {},
 });
