@@ -5,13 +5,29 @@ export type Info = {
   prev: null;
 };
 
+export type Status = "Alive" | "Dead" | "unknown";
+export type Species =
+  | "Human"
+  | "Alien"
+  | "Humanoid"
+  | "Poopybutthole"
+  | "Mythological"
+  | "Unknown"
+  | "Animal"
+  | "Disease"
+  | "Robot"
+  | "Cronenberg"
+  | "Planet";
+
+export type Gender = "Female" | "Male" | "Genderless" | "unknown";
+
 export type Character = {
   id: number;
   name: string;
-  status: "Alive" | "Dead" | "unknown";
-  species: "Alien" | "Human";
+  status: Status;
+  species: Species;
   type: string;
-  gender: "Female" | "Male" | "unknown";
+  gender: Gender;
   origin: {
     name: string;
     url: string;

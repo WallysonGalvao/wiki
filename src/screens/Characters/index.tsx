@@ -4,12 +4,13 @@ import { useNavigation } from "@react-navigation/core";
 
 import Card from "../../components/Card";
 import Detail from "../../components/Detail";
+import Filters from "../../components/Filters";
 
 import api from "../../services";
 import { Character } from "../../types/common";
 import { CharactersResponse } from "../../types/response";
 
-type CharacterParams = {
+export type CharacterParams = {
   page: number;
   name: string;
   status: string;
@@ -17,9 +18,11 @@ type CharacterParams = {
   species: string;
 };
 
-const initialState = {} as CharacterParams;
+const initialState = {
+  page: 1,
+} as CharacterParams;
 
-type Reducer = {
+export type Reducer = {
   key: keyof CharacterParams;
   value: string | number;
 };
@@ -32,14 +35,14 @@ const reducer = (state: CharacterParams, { key, value }: Reducer) => ({
 const Characters = () => {
   const { setOptions } = useNavigation();
   const [params, setParams] = useReducer(reducer, initialState);
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isDetailVisibile, setDetailVisibile] = useState(false);
+  const [isFiltersVisibile, setFiltersVisibile] = useState(false);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
     null
   );
 
   const callCharacters = async (name = "") => {
-    console.log("callCharacters:: " + JSON.stringify(name));
     const { data } = await api.get<CharactersResponse>("character", {
       params: { ...params, page: 1, name },
     });
@@ -47,7 +50,6 @@ const Characters = () => {
   };
 
   const callMoreCharacters = async (page: number) => {
-    console.log("callMoreCharacters:: " + JSON.stringify(params));
     const { data } = await api.get<CharactersResponse>("character", {
       params: { ...params, page },
     });
@@ -65,13 +67,11 @@ const Characters = () => {
     callCharacters(value);
   };
 
-  const handleFilter = () => {
-    console.log("Filter");
-  };
+  const handleFilter = () => setFiltersVisibile(true);
 
   useEffect(() => {
     callCharacters();
-  }, []);
+  }, [params]);
 
   useLayoutEffect(() => {
     setOptions({
@@ -85,7 +85,7 @@ const Characters = () => {
     <Card
       character={item}
       setSelectedCharacter={setSelectedCharacter}
-      setModalVisible={setModalVisible}
+      setDetailVisibile={setDetailVisibile}
     />
   );
 
@@ -112,8 +112,16 @@ const Characters = () => {
       {!!selectedCharacter && (
         <Detail
           character={selectedCharacter}
-          isVisible={isModalVisible}
-          setModalVisible={setModalVisible}
+          isVisible={isDetailVisibile}
+          setDetailVisibile={setDetailVisibile}
+        />
+      )}
+      {!!isFiltersVisibile && (
+        <Filters
+          isVisible={isFiltersVisibile}
+          setFiltersVisibile={setFiltersVisibile}
+          params={params}
+          setParams={setParams}
         />
       )}
     </View>

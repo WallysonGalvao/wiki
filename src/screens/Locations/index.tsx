@@ -14,7 +14,7 @@ const Locations = () => {
   const [locationId, setLocationId] = useState(5);
   const [location, setLocation] = useState<Location>({} as Location);
   const [locations, setLocations] = useState<Location[]>([]);
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isDetailVisibile, setDetailVisibile] = useState(false);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
     null
@@ -78,7 +78,7 @@ const Locations = () => {
     <Card
       character={item}
       setSelectedCharacter={setSelectedCharacter}
-      setModalVisible={setModalVisible}
+      setDetailVisibile={setDetailVisibile}
     />
   );
 
@@ -96,8 +96,8 @@ const Locations = () => {
       {!!selectedCharacter && (
         <Detail
           character={selectedCharacter}
-          isVisible={isModalVisible}
-          setModalVisible={setModalVisible}
+          isVisible={isDetailVisibile}
+          setDetailVisibile={setDetailVisibile}
         />
       )}
     </SafeAreaView>

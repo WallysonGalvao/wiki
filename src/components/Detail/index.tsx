@@ -7,14 +7,14 @@ import { Character } from "../../types/common";
 type DetailProps = {
   character: Character;
   isVisible: boolean;
-  setModalVisible: (value: boolean) => void;
+  setDetailVisibile: (value: boolean) => void;
 };
 
-const Detail = ({ character, isVisible, setModalVisible }: DetailProps) => {
+const Detail = ({ character, isVisible, setDetailVisibile }: DetailProps) => {
   return (
     <Modal
       isVisible={isVisible}
-      onBackdropPress={() => setModalVisible(false)}
+      onBackdropPress={() => setDetailVisibile(false)}
       style={styles.modal}
     >
       <View style={styles.container}>

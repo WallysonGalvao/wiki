@@ -6,17 +6,17 @@ import { Character } from "../../types/common";
 type CardProps = {
   character: Character;
   setSelectedCharacter: (character: Character) => void;
-  setModalVisible: (value: boolean) => void;
+  setDetailVisibile: (value: boolean) => void;
 };
 
 const Card = ({
   character,
   setSelectedCharacter,
-  setModalVisible,
+  setDetailVisibile,
 }: CardProps) => {
   const handleDetail = () => {
     setSelectedCharacter(character);
-    setModalVisible(true);
+    setDetailVisibile(true);
   };
 
   return (
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    width: 154,
+    width: "100%",
     height: 150,
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,

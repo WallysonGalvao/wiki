@@ -14,7 +14,7 @@ const Episodes = () => {
   const [episodeId, setEpisodeId] = useState(5);
   const [episode, setEpisode] = useState<Episode>({} as Episode);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isDetailVisibile, setDetailVisibile] = useState(false);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
     null
@@ -78,7 +78,7 @@ const Episodes = () => {
     <Card
       character={item}
       setSelectedCharacter={setSelectedCharacter}
-      setModalVisible={setModalVisible}
+      setDetailVisibile={setDetailVisibile}
     />
   );
 
@@ -96,8 +96,8 @@ const Episodes = () => {
       {!!selectedCharacter && (
         <Detail
           character={selectedCharacter}
-          isVisible={isModalVisible}
-          setModalVisible={setModalVisible}
+          isVisible={isDetailVisibile}
+          setDetailVisibile={setDetailVisibile}
         />
       )}
     </SafeAreaView>
