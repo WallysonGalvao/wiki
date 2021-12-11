@@ -20,7 +20,7 @@ const Picker = ({ data, label, selectedValue, onValueChange }: PickerProps) => {
         itemStyle={styles.pickerItem}
       >
         {data?.map((d) => (
-          <RNPicker.Item label={d.name} value={d.id} />
+          <RNPicker.Item key={d.id} label={d.name} value={d.id} />
         ))}
       </RNPicker>
     </>
